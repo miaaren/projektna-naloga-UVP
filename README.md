@@ -4,11 +4,9 @@ Analizirala bom prvih 5000 knjig, ki so bile izbrane za najboljše knjige dvajse
 
 Za vsak film bom zajela:
 - naslov in avtorja
-- oceno in število glasov
-- žanr in število strani
+- splošno oceno knjige in šteivlo oseb, ki je oceno knjige podalo
+- število glasov za najboljšo knjigo in rezultat glasovanja (=kako visoko so jo glasujoči uvrstili + koliko ljudi je glasovalo)
 
 Delovne hipoteze:
 - Kateri avtorji so napisali največ knjig, ki so bile izbrane?
-- Kateri žanr knjige se največkrat pojavi?
-- Ali obstaja povezava med številom strani in oceno?
-- Ali obstaja povezava med žanrom in številom glasov?
+- Ali obstaja povezava med splošno oceno knjige in rezultatom glasovanja?
