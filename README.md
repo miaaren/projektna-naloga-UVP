@@ -4,10 +4,12 @@ Analizirala bom prvih 5000 knjig, ki so bile izbrane za najboljše knjige dvajse
 
 Za vsako knjigo bom zajela:
 - naslov in avtorja
-- splošno oceno knjige in število oseb, ki je oceno knjige podalo
-- število glasov za najboljšo knjigo in rezultat glasovanja (=kako visoko so jo glasujoči uvrstili + koliko ljudi je glasovalo)
+- število glasov
+- oceno knjige
+- število strani
+- jezik
 
 Delovne hipoteze:
 - Kateri avtorji so napisali največ knjig, ki so bile izbrane?
-- Ali obstaja povezava med splošno oceno knjige in rezultatom glasovanja?
-- Ali obstaja povezava med splošno oceno knjige in številom oseb, ki je spošno oceno podalo?
+- Ali obstaja povezava med oceno knjige in številom glasov za najboljšo knjigo dvajsetega stoletja?
+- V katerem jeziku je bilo napisanih največ knjig in v katerih jezikih so knjige, ki so na vrhu lestvice?
