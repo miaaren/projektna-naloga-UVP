@@ -18,14 +18,10 @@ def download_url_to_string(url):
     strani kot niz. V primeru, da med izvajanje pride do napake vrne None.
     """
     try:
-        # del kode, ki morda sproži napako
         r = requests.get(url)
     except requests.exceptions.ConnectionError:
-        # koda, ki se izvede pri napaki
-        # dovolj je če izpišemo opozorilo in prekinemo izvajanje funkcije
         print("Napaka pri povezovanju do:", url)
         return None
-    # nadaljujemo s kodo če ni prišlo do napake
     if r.status_code == requests.codes.ok:
         return r.text
     else:
@@ -65,7 +61,7 @@ def read_file_to_string(directory, filename):
 def page_to_ads(page_content):
     """Funkcija poišče posamezne oglase, ki se nahajajo v spletni strani in
     vrne njihov seznam"""
-    rx = re.compile(r'<div class=\"col-lg-9 col-md-6\">.(*?)</article>',
+    rx = re.compile(r'<div class=\"col-lg-9 col-md-6\">(.*?)</article>',
                     re.DOTALL)
     ads = re.findall(rx, page_content)
     return ads
@@ -75,18 +71,16 @@ def get_dict_from_ad_block(block):
     """Funkcija iz niza za posamezen oglasni blok izlušči podatke o imenu,
     lokaciji, neto urni postavki, trajanju in delovniku ter vrne slovar, 
     ki vsebuje ustrezne podatke"""
-    rx = re.compile(r'<h3 .*?>.(?P<name>.*?)</h3>'
-                    r'<li>\n\t*<svg.*?</svg>\n\t*(?P<location>\w*).*?</li>'
-#ta ne najde imena kraja? r'<li>.*?(?P<location>\w*).*?</li>'
-                    r'<strong>(?P<payment_neto>\d+?\D\d+?.*?)</strong>'
-                    r'<li>Delovnik: <strong>(?P<working_hours>.*?)</strong></li>'
-                    r'<li>Trajanje: <strong>(?P<duration>.*?)</strong></li>',
+    rx = re.compile(r'<h3 .*?>(?P<name>.*?)</h3>'
+                    r'.*?<li>\s*<svg.*?</svg>\s*(?P<location>.*?)\s*?</li>'
+                    r'.*?<strong>(?P<payment_neto>\d+?\D\d+?.*?)</strong>'
+                    r'.*?<li>Trajanje: <strong>(?P<duration>.*?)</strong></li>',
                     re.DOTALL)
     data = re.search(rx, block)
     ad_dict = data.groupdict()
 
-    # Ker nimajo vsi oglasi podatka o številu prostih mest, to rešimo z dodatnim vzorcem
-    rloc = re.compile(r'<li>Št\. prostih mest: <strong>(?P<vacancies>\d+?)</strong></li>')
+    # Ker nimajo vsi oglasi podatka o številu prostih mest, dodamo vzorec:
+    rloc = re.compile(r'.*?<li>Št\. prostih mest: <strong>(?P<vacancies>\d+?)</strong></li>')
     locdata = re.search(rloc, block)
     if locdata is not None:
         ad_dict['vacancies'] = locdata.group('vacancies')
@@ -126,44 +120,20 @@ def write_csv(fieldnames, rows, directory, filename):
             writer.writerow(row)
     return None
 
-# Definirajte funkcijo, ki sprejme neprazen seznam slovarjev, ki predstavljajo
-# podatke iz oglasa za delo, in zapiše vse podatke v csv datoteko. Imena za
-# stolpce [fieldnames] pridobite iz slovarjev.
 
-
-def write_cat_ads_to_csv(ads, directory, filename):
+def write_job_ads_to_csv(ads, directory, filename):
     """Funkcija vse podatke iz parametra "ads" zapiše v csv datoteko podano s
     parametroma "directory"/"filename". Funkcija predpostavi, da so ključi vseh
     slovarjev parametra ads enaki in je seznam ads neprazen."""
-    # Stavek assert preveri da zahteva velja
-    # Če drži se program normalno izvaja, drugače pa sproži napako
-    # Prednost je v tem, da ga lahko pod določenimi pogoji izklopimo v
-    # produkcijskem okolju
     assert ads and (all(j.keys() == ads[0].keys() for j in ads))
     write_csv(ads[0].keys(), ads, directory, filename)
 
 
-# Celoten program poženemo v glavni funkciji
-
 def main(redownload=True, reparse=True):
-    """Funkcija izvede celoten del pridobivanja podatkov:
-    1. Oglase prenese iz bolhe
-    2. Lokalno html datoteko pretvori v lepšo predstavitev podatkov
-    3. Podatke shrani v csv datoteko
-    """
-    # Najprej v lokalno datoteko shranimo glavno stran
-    save_frontpage(jobs_directory, frontpage_filename)
-
-    # Iz lokalne (html) datoteke preberemo podatke
-ads = page_to_ads(read_file_to_string(jobs_directory, frontpage_filename))
-    # Podatke preberemo v lepšo obliko (seznam slovarjev)
-ads_nice = [get_dict_from_ad_block(ad) for ad in ads]
-    # Podatke shranimo v csv datoteko
-write_cat_ads_to_csv(ads_nice, jobs_directory, csv_filename)
-
-    # Dodatno: S pomočjo parametrov funkcije main omogoči nadzor, ali se
-    # celotna spletna stran ob vsakem zagon prenese (četudi že obstaja)
-    # in enako za pretvorbo
+    #save_frontpage(jobs_directory, frontpage_filename)
+    ads = page_to_ads(read_file_to_string(jobs_directory, frontpage_filename))
+    ads_nice = [get_dict_from_ad_block(ad) for ad in ads]
+    write_job_ads_to_csv(ads_nice, jobs_directory, csv_filename)
 
 
 if __name__ == '__main__':
