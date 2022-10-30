@@ -1,15 +1,17 @@
 # Projektna naloga pri Programiranju 1
 
-Analizirala bom prvih 5000 knjig, ki so bile izbrane za najboljše knjige dvajsetega stoletja (glede na število glasov) na spletni strani [Goodreads](https://www.goodreads.com/list/show/6.Best_Books_of_the_20th_Century).
+Analizirala bom prvih 3000 oglasov za študentsko delo, ki so objavljeni na spletni strani [e-Študentski Servis](https://www.studentski-servis.com/studenti/prosta-dela).
 
-Za vsako knjigo bom zajela:
-- naslov in avtorja
-- število glasov
-- oceno knjige
-- število strani
-- jezik
+Za vsak oglas bom zajela:
+- narava/ime dela
+- lokacijo, kjer se delo izvaja
+- neto plačilo
+- trajanje
+- delovnik
+- število prostih mest
 
 Delovne hipoteze:
-- Kateri avtorji so napisali največ knjig, ki so bile izbrane?
-- Ali obstaja povezava med oceno knjige in številom glasov za najboljšo knjigo dvajsetega stoletja?
-- V katerem jeziku je bilo napisanih največ knjig in v katerih jezikih so knjige, ki so na vrhu lestvice?
+- Ali obstaja povezava med številom prostih mest in lokacijo, kjer se delo izvaja?
+- V katerih predelih Slovenije je plačilo (na uro) najvišje?
+- Ali obstaja povezava med plačilom in delovnikom?
+- Katera vrsta dela je najbolj iskana?
