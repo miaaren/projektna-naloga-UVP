@@ -74,7 +74,8 @@ def get_dict_from_ad_block(block):
     rx = re.compile(r'<h3 .*?>(?P<name>.*?)</h3>'
                     r'.*?<li>\s*<svg.*?</svg>\s*(?P<location>.*?)\s*?</li>'
                     r'.*?<strong>(?P<payment_neto>\d+?\D\d+?.*?)</strong>'
-                    r'.*?<li>Trajanje: <strong>(?P<duration>.*?)</strong></li>',
+                    r'.*?<li>Trajanje: <strong>(?P<duration>.*?)</strong></li>'
+                    r'.*?<li>Delovnik: <strong>(?P<working_hours>.*?)</strong></li>',
                     re.DOTALL)
     data = re.search(rx, block)
     ad_dict = data.groupdict()
