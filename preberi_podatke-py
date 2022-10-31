@@ -1,0 +1,68 @@
+import json
+import re
+import orodja
+import json
+import requests
+
+
+vzorec_bloka = re.compile(
+    r'<div class=\"col-lg-9 col-md-6\">.*?</article>',
+    flags=re.DOTALL
+)
+
+vzorec_oglasa = re.compile(
+    r'.*?<h3 .*?>(?P<vrsta_dela>.*?)</h3>'
+    r'.*?<li>\s*<svg.*?</svg>\s*(?P<lokacija>.*?)\s*?</li>'
+    r'.*?<strong>(?P<neto_placilo>\d+?\D\d+?.*?)</strong>'
+    r'.*?<li>Trajanje: <strong>(?P<trajanje>.*?)</strong></li>'
+    r'.*?<li>Delovnik: <strong>(?P<delovnik>.*?)</strong></li>'
+    r'.*?Šifra: <strong>(?P<sifra>\d+)</strong>',
+    flags=re.DOTALL
+)
+
+vzorec_prosta_mesta = re.compile(
+    r'.*?<li>Št\. prostih mest: <strong>(?P<prosta_mesta>\d+?)</strong></li>'
+)
+
+
+def izloci_podatke_oglasa(blok):
+    oglas = vzorec_oglasa.search(blok).groupdict()
+    oglas['sifra'] = int(oglas['sifra'])
+    oglas['vrsta_dela'] = oglas['vrsta_dela']
+    oglas['lokacija'] = oglas['lokacija']
+    oglas['neto_placilo'] = oglas['neto_placilo']
+    oglas['trajanje'] = oglas['trajanje']
+    oglas['delovnik'] = oglas['delovnik']
+
+    #zabeleži število prostih mest, če so podana v oglasu
+    prosta_mesta = vzorec_prosta_mesta.search(blok)
+    if prosta_mesta:
+        oglas['prosta_mesta'] = int(oglas['prosta_mesta'])
+    else:
+        oglas['prosta_mesta'] = None
+    
+    return oglas
+    
+
+def oglasi_na_strani(stran):
+    url = (
+        f'https://www.studentski-servis.com/studenti/prosta-dela'
+        f'?scrolltop=1&kljb=&page={stran}&isci=1&sort=&dm1s=1&hourly_rate=5.21%3B21'
+    )
+    ime_datoteke = 'zajeti-podatki/studentska-dela-{}.html'.format(stran)
+    orodja.shrani_spletno_stran(url, ime_datoteke)
+    vsebina = orodja.vsebina_datoteke(ime_datoteke)
+    for blok in vzorec_bloka.finditer(vsebina):
+        yield izloci_podatke_oglasa(blok.group(0))
+
+
+oglasi = []
+for stran in range(1, 6):
+    for oglas in oglasi_na_strani(stran):
+        oglasi.append(oglas)
+oglasi.sort(key=lambda oglas: oglas['sifra'])
+orodja.zapisi_json(oglasi, 'obdelani-podatki/oglasi.json')
+orodja.zapisi_csv(
+    oglasi,
+    ['sifra', 'vrsta_dela', 'lokacija', 'neto_placilo', 'trajanje', 'delovnik', 'prosta_mesta'], 'obdelani-podatki/oglasi.csv'
+)
