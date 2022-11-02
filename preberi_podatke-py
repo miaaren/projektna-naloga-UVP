@@ -1,6 +1,6 @@
 import re
 import orodja
-import json
+import time
 
 
 vzorec_bloka = re.compile(
@@ -54,9 +54,10 @@ def oglasi_na_strani(stran):
 
 
 oglasi = []
-for stran in range(1, 6):
+for stran in range(1, 61):
     for oglas in oglasi_na_strani(stran):
         oglasi.append(oglas)
+    time.sleep(10)
 oglasi.sort(key=lambda oglas: oglas['sifra'])
 orodja.zapisi_json(oglasi, 'obdelani-podatki/oglasi.json')
 orodja.zapisi_csv(
