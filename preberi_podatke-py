@@ -1,8 +1,6 @@
-import json
 import re
 import orodja
 import json
-import requests
 
 
 vzorec_bloka = re.compile(
@@ -35,8 +33,7 @@ def izloci_podatke_oglasa(blok):
     oglas['delovnik'] = oglas['delovnik']
 
     #zabeleži število prostih mest, če so podana v oglasu
-    prosta_mesta = vzorec_prosta_mesta.search(blok)
-    if prosta_mesta:
+    if 'prosta_mesta' in oglas:
         oglas['prosta_mesta'] = int(oglas['prosta_mesta'])
     else:
         oglas['prosta_mesta'] = None
