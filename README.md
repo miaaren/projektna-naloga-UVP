@@ -3,7 +3,8 @@
 Analizirala bom prvih 3000 oglasov za študentsko delo, ki so objavljeni na spletni strani [e-Študentski Servis](https://www.studentski-servis.com/studenti/prosta-dela).
 
 Za vsak oglas bom zajela:
-- narava/ime dela
+- šifro dela
+- vrsta dela
 - lokacijo, kjer se delo izvaja
 - neto plačilo
 - trajanje
@@ -15,3 +16,5 @@ Delovne hipoteze:
 - V katerih predelih Slovenije je plačilo (na uro) najvišje?
 - Ali obstaja povezava med plačilom in delovnikom?
 - Katera vrsta dela je najbolj iskana?
+
+V datoteki oglasi.csv so shranjeni podatki vseh 3000 oglasov.
