@@ -26,18 +26,14 @@ vzorec_prosta_mesta = re.compile(
 def izloci_podatke_oglasa(blok):
     oglas = vzorec_oglasa.search(blok).groupdict()
     oglas['sifra'] = int(oglas['sifra'])
-    oglas['vrsta_dela'] = oglas['vrsta_dela']
-    oglas['lokacija'] = oglas['lokacija']
-    oglas['neto_placilo'] = oglas['neto_placilo']
-    oglas['trajanje'] = oglas['trajanje']
-    oglas['delovnik'] = oglas['delovnik']
+
 
     #zabeleži število prostih mest, če so podana v oglasu
-    if 'prosta_mesta' in oglas:
-        oglas['prosta_mesta'] = int(oglas['prosta_mesta'])
+    oglas1 = vzorec_prosta_mesta.search(blok)
+    if oglas1 is not None:
+        oglas['prosta_mesta'] = int(oglas1.groupdict()['prosta_mesta'])
     else:
         oglas['prosta_mesta'] = None
-    
     return oglas
     
 
