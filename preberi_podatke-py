@@ -11,7 +11,7 @@ vzorec_bloka = re.compile(
 vzorec_oglasa = re.compile(
     r'.*?<h3 .*?>(?P<vrsta_dela>.*?)</h3>'
     r'.*?<li>\s*<svg.*?</svg>\s*(?P<lokacija>.*?)\s*?</li>'
-    r'.*?<strong>(?P<neto_placilo>\d+?\D\d+?.*?)</strong>'
+    r'.*?<strong>(?P<neto_placilo>\d+?\D\d+?).*?</strong>'
     r'.*?<li>Trajanje: <strong>(?P<trajanje>.*?)</strong></li>'
     r'.*?<li>Delovnik: <strong>(?P<delovnik>.*?)</strong></li>'
     r'.*?Šifra: <strong>(?P<sifra>\d+)</strong>',
